@@ -103,7 +103,9 @@ class PX8:
         else:
             item = ''
         if self.gender:
-            gender = f' ({self.gender})' or ''
+            gender = f' ({self.gender})'
+        else:
+            gender = ''
         Set = [f'{nickname}{species}{gender}{item}', f"Ability: {self.ability}"]
         if self.shiny:
             Set.append(f"Shiny: {self.shiny}")
