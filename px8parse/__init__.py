@@ -92,12 +92,19 @@ class PX8:
         self.__shuffle__(shuffle_order)
 
     def _parse_showdown(self) -> str:
-        nickname = self.nickname if self._kt.has_nickname else ''
-        species = f' ({self.species})' if self._kt.has_nickname else ''
-        item = f' @ {self.item}' or ''
-        gender = f' ({self.gender})' or ''
-        Set = [f'{nickname}{species}{gender}{item}']
-        Set.append(f"Ability: {self.ability}")
+        if self._kt.has_nickname:
+            nickname = self.nickname
+            species = f' ({self.species})'
+        else:
+            nickname = ''
+            species = self.species
+        if self.item:
+            item = f' @ {self.item}' or ''
+        else:
+            item = ''
+        if self.gender:
+            gender = f' ({self.gender})' or ''
+        Set = [f'{nickname}{species}{gender}{item}', f"Ability: {self.ability}"]
         if self.shiny:
             Set.append(f"Shiny: {self.shiny}")
         evs, ivs = [], []
