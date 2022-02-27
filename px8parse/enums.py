@@ -1,5 +1,6 @@
 from os.path import abspath
 from pathlib import Path
+from json import loads
 
 assets_path = Path(abspath(__file__)).parent / "assets"
 
@@ -12,6 +13,9 @@ files = [
 ]
 
 enums = {}
+
+with open(assets_path / "forms.json", "rb") as F:
+    enums["forms"] = loads(F.read())
 
 enums["ev_units"] = ["HP", "Atk", "Def", "SpA", "SpD", "Spe"]
 enums["shiny_strings"] = ["None", "Star", "Square"]
