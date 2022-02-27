@@ -119,7 +119,7 @@ class PX8:
         Set.append(f'OT: {self._kt.d.ot}')
         Set.append(f"TID: {str(self._getushort(offset=0x0C))}")
         Set.append(f"SID: {str(self._getushort(offset=0x0E))}")
-        Set.apend(f"OTGender: {self.ot_gender}")
+        Set.append(f"OTGender: {self.ot_gender}")
         
 
         evs, ivs = [], []
