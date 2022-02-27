@@ -16,7 +16,7 @@ class PX8:
 
         self._kt = Pkb8.from_bytes(buf=self.to_bytes())
 
-        self.species = enums["forms"][self._kt.a.species][self._kt.a.from]
+        self.species = enums["forms"][self._kt.a.species][self._kt.a.form]
 
         if self._kt.has_nickname:
             self.nickname = self._bytes[0x58:0x72].split(b"\00\00")[0].decode("utf-8")
