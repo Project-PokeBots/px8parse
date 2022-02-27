@@ -117,8 +117,8 @@ class PX8:
 
 
         Set.append(f'OT: {self._kt.d.ot}')
-        Set.append(f"TID: {str(self._getushort(offset=0x0C))}")
-        Set.append(f"SID: {str(self._getushort(offset=0x0E))}")
+        Set.append(f"TID: {self._kt.a.tidsid[4:]}")
+        Set.append(f"SID: {self._kt.a.tidsid[:4]}")
         Set.append(f"OTGender: {self.ot_gender}")
         
 
