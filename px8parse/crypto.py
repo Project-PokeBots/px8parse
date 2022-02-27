@@ -1,4 +1,4 @@
-from enums import enums
+from .enums import enums
 
 class Pokecypto:
     def __init__(self, data: bytearray) -> None:
