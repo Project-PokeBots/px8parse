@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "px8parse"
-version = "0.4.1"
+version = "0.5.0"
 description = ""
 authors = ["Z1R343L"]
 packages = [
     { include = "px8parse" },
     { include = "px8parse/**/*.py" },
 ]
-include = ["px8parse/assets/*"]
+include = ["px8parse/assets/*.json"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
