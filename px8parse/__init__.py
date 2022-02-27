@@ -31,6 +31,11 @@ class PX8:
         else:
             self.gender = enums["gender"][self._kt.gender]
 
+        if self._kt.ot_gender not in [0, 1]:
+            self.ot_gender = None
+        else:
+            self.ot_gender = enums["gender"][self._kt.ot_gender]
+
         if self._kt.a.held_item != 0:
             self.item = enums["items"][self._kt.a.held_item]
         else:
@@ -109,6 +114,14 @@ class PX8:
         Set = [f'{nickname}{species}{gender}{item}', f"Ability: {self.ability}"]
         if self.shiny:
             Set.append(f"Shiny: {self.shiny}")
+
+
+        Set.append(f'OT: {self._kt.d.ot}')
+        Set.append(f"TID: {str(self._getushort(offset=0x0C))}")
+        Set.append(f"SID: {str(self._getushort(offset=0x0E))}")
+        Set.apend(f"OTGender: {self.ot_gender}")
+        
+
         evs, ivs = [], []
         for i, ev in enumerate(self.evs):
             if ev != 0:
