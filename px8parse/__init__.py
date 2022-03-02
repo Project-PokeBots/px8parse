@@ -3,6 +3,7 @@ from typing import Union
 from .crypto import Pokecypto
 from .enums import enums
 from .kaitai.pkb8 import Pkb8
+from .kaitai.pb7 import Pb7
 
 
 class PX8:
