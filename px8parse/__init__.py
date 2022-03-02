@@ -22,7 +22,7 @@ class PX8:
         elif len(self.to_bytes()) == 344:
             self._kt = Pkb8.from_bytes(buf=self.to_bytes())
 
-        self.species = enums["forms"][self._kt.a.species][self._kt.a.form]
+        self.species = enums["forms"][self._kt.a.species][self._kt.form]
 
         if self._kt.has_nickname:
             self.nickname = self._bytes[0x58:0x72].split(b"\00\00")[0].decode("utf-8")
@@ -61,7 +61,7 @@ class PX8:
 
         self._showdown = self._parse_showdown()
 
-        self.sprite = enums["sprites"][self._kt.a.species][self._kt.a.form][1 if self.shiny else 0]
+        self.sprite = enums["sprites"][self._kt.a.species][self._kt.form][1 if self.shiny else 0]
 
     def __str__(self) -> str:
         if not self._bytes:
