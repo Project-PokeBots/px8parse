@@ -22,7 +22,7 @@ class PX8:
         elif len(self.to_bytes()) == 344:
             self._kt = Pkb8.from_bytes(buf=self.to_bytes())
 
-        self.species = enums["forms"][self._kt.a.species][self._kt.form]
+        self.species = enums["forms"][self._kt.species][self._kt.form]
 
         if self._kt.has_nickname:
             self.nickname = self._bytes[0x58:0x72].split(b"\00\00")[0].decode("utf-8")
@@ -30,7 +30,7 @@ class PX8:
             self.nickname = None
 
         self.shiny = self._kt.shiny_type if self._kt.is_shiny else None
-        self.ability = enums["ability"][self._kt.a.ability]
+        self.ability = enums["ability"][self._kt.ability]
 
         if self._kt.gender not in [0, 1]:
             self.gender = None
@@ -38,30 +38,30 @@ class PX8:
             self.gender = enums["gender"][self._kt.gender]
 
         self.ot_gender = enums["gender_full"][self._kt.ot_gender]
-        self.ot_lang = enums["lang"][self._kt.c.language]
+        self.ot_lang = enums["lang"][self._kt.language]
 
-        self.ball = enums["ball"][self._kt.d.ball]
+        self.ball = enums["ball"][self._kt.ball]
 
 
-        if self._kt.a.held_item != 0:
-            self.item = enums["items"][self._kt.a.held_item]
+        if self._kt.held_item != 0:
+            self.item = enums["items"][self._kt.held_item]
         else:
             self.item = None
 
-        self.nature = enums["natures"][self._kt.a.nature]
+        self.nature = enums["natures"][self._kt.nature]
 
         self.ivs = self._kt.ivs
 
-        self.evs = self._kt.a.evs
+        self.evs = self._kt.evs
 
         self.moves = []
-        for m in self._kt.b.moves:
+        for m in self._kt.moves:
             if m != 0:
                 self.moves.append(enums["moves"][m])
 
         self._showdown = self._parse_showdown()
 
-        self.sprite = enums["sprites"][self._kt.a.species][self._kt.form][1 if self.shiny else 0]
+        self.sprite = enums["sprites"][self._kt.species][self._kt.form][1 if self.shiny else 0]
 
     def __str__(self) -> str:
         if not self._bytes:

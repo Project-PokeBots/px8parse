@@ -1,27 +1,3 @@
-# MIT License
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-# This file was compiled from a KSY format file downloaded from:
-# https://github.com/Project-PokeBots/kaitai_struct_formats
-
-
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
@@ -213,6 +189,14 @@ class Pb7(KaitaiStruct):
         return self._m_pkrs if hasattr(self, '_m_pkrs') else None
 
     @property
+    def is_shiny(self):
+        if hasattr(self, '_m_is_shiny'):
+            return self._m_is_shiny if hasattr(self, '_m_is_shiny') else None
+
+        self._m_is_shiny = self.shiny_xor < 15
+        return self._m_is_shiny if hasattr(self, '_m_is_shiny') else None
+
+    @property
     def met_lvl(self):
         if hasattr(self, '_m_met_lvl'):
             return self._m_met_lvl if hasattr(self, '_m_met_lvl') else None
@@ -261,12 +245,36 @@ class Pb7(KaitaiStruct):
         return self._m_form_argument_elapsed if hasattr(self, '_m_form_argument_elapsed') else None
 
     @property
+    def shiny_type(self):
+        if hasattr(self, '_m_shiny_type'):
+            return self._m_shiny_type if hasattr(self, '_m_shiny_type') else None
+
+        self._m_shiny_type = ((u"Square" if self.shiny_xor == 0 else u"Star") if self.is_shiny else u"")
+        return self._m_shiny_type if hasattr(self, '_m_shiny_type') else None
+
+    @property
     def pkrs_strain(self):
         if hasattr(self, '_m_pkrs_strain'):
             return self._m_pkrs_strain if hasattr(self, '_m_pkrs_strain') else None
 
         self._m_pkrs_strain = (self.pkrs >> 4)
         return self._m_pkrs_strain if hasattr(self, '_m_pkrs_strain') else None
+
+    @property
+    def held_item(self):
+        if hasattr(self, '_m_held_item'):
+            return self._m_held_item if hasattr(self, '_m_held_item') else None
+
+        self._m_held_item = self.a.held_item
+        return self._m_held_item if hasattr(self, '_m_held_item') else None
+
+    @property
+    def ability(self):
+        if hasattr(self, '_m_ability'):
+            return self._m_ability if hasattr(self, '_m_ability') else None
+
+        self._m_ability = self.a.ability
+        return self._m_ability if hasattr(self, '_m_ability') else None
 
     @property
     def form_argumant_remain(self):
@@ -283,6 +291,30 @@ class Pb7(KaitaiStruct):
 
         self._m_ht_flags = self.d.multi_1
         return self._m_ht_flags if hasattr(self, '_m_ht_flags') else None
+
+    @property
+    def species(self):
+        if hasattr(self, '_m_species'):
+            return self._m_species if hasattr(self, '_m_species') else None
+
+        self._m_species = self.a.species
+        return self._m_species if hasattr(self, '_m_species') else None
+
+    @property
+    def moves(self):
+        if hasattr(self, '_m_moves'):
+            return self._m_moves if hasattr(self, '_m_moves') else None
+
+        self._m_moves = self.b.moves
+        return self._m_moves if hasattr(self, '_m_moves') else None
+
+    @property
+    def shiny_xor(self):
+        if hasattr(self, '_m_shiny_xor'):
+            return self._m_shiny_xor if hasattr(self, '_m_shiny_xor') else None
+
+        self._m_shiny_xor = ((((self.a.tidsid >> 16) ^ (self.a.tidsid & 65535)) ^ (self.a.pid >> 16)) ^ (self.a.pid & 65535))
+        return self._m_shiny_xor if hasattr(self, '_m_shiny_xor') else None
 
     @property
     def form(self):
@@ -307,6 +339,22 @@ class Pb7(KaitaiStruct):
 
         self._m_fav = (self.a.multi_0 & 8) != 0
         return self._m_fav if hasattr(self, '_m_fav') else None
+
+    @property
+    def ball(self):
+        if hasattr(self, '_m_ball'):
+            return self._m_ball if hasattr(self, '_m_ball') else None
+
+        self._m_ball = self.d.ball
+        return self._m_ball if hasattr(self, '_m_ball') else None
+
+    @property
+    def evs(self):
+        if hasattr(self, '_m_evs'):
+            return self._m_evs if hasattr(self, '_m_evs') else None
+
+        self._m_evs = self.a.evs
+        return self._m_evs if hasattr(self, '_m_evs') else None
 
     @property
     def fateful_encounter(self):
@@ -357,11 +405,27 @@ class Pb7(KaitaiStruct):
         return self._m_ivs if hasattr(self, '_m_ivs') else None
 
     @property
+    def nature(self):
+        if hasattr(self, '_m_nature'):
+            return self._m_nature if hasattr(self, '_m_nature') else None
+
+        self._m_nature = self.a.nature
+        return self._m_nature if hasattr(self, '_m_nature') else None
+
+    @property
     def has_nickname(self):
         if hasattr(self, '_m_has_nickname'):
             return self._m_has_nickname if hasattr(self, '_m_has_nickname') else None
 
         self._m_has_nickname = ((self.ivs32 >> 31) & 1) == 1
         return self._m_has_nickname if hasattr(self, '_m_has_nickname') else None
+
+    @property
+    def language(self):
+        if hasattr(self, '_m_language'):
+            return self._m_language if hasattr(self, '_m_language') else None
+
+        self._m_language = self.d.language
+        return self._m_language if hasattr(self, '_m_language') else None
 
 

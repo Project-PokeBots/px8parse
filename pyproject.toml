@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "px8parse"
-version = "0.6.1"
+version = "0.7.0"
 description = ""
 authors = ["Z1R343L"]
 packages = [

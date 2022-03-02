@@ -276,12 +276,28 @@ class Pkb8(KaitaiStruct):
         return self._m_pkrs_strain if hasattr(self, '_m_pkrs_strain') else None
 
     @property
+    def held_item(self):
+        if hasattr(self, '_m_held_item'):
+            return self._m_held_item if hasattr(self, '_m_held_item') else None
+
+        self._m_held_item = self.a.held_item
+        return self._m_held_item if hasattr(self, '_m_held_item') else None
+
+    @property
     def flag2(self):
         if hasattr(self, '_m_flag2'):
             return self._m_flag2 if hasattr(self, '_m_flag2') else None
 
         self._m_flag2 = (self.a.multi_1 & 2) == 2
         return self._m_flag2 if hasattr(self, '_m_flag2') else None
+
+    @property
+    def ability(self):
+        if hasattr(self, '_m_ability'):
+            return self._m_ability if hasattr(self, '_m_ability') else None
+
+        self._m_ability = self.a.ability
+        return self._m_ability if hasattr(self, '_m_ability') else None
 
     @property
     def form_arg(self):
@@ -306,6 +322,22 @@ class Pkb8(KaitaiStruct):
 
         self._m_form_arg_max = (self.form_arg >> 16)
         return self._m_form_arg_max if hasattr(self, '_m_form_arg_max') else None
+
+    @property
+    def species(self):
+        if hasattr(self, '_m_species'):
+            return self._m_species if hasattr(self, '_m_species') else None
+
+        self._m_species = self.a.species
+        return self._m_species if hasattr(self, '_m_species') else None
+
+    @property
+    def moves(self):
+        if hasattr(self, '_m_moves'):
+            return self._m_moves if hasattr(self, '_m_moves') else None
+
+        self._m_moves = self.b.moves
+        return self._m_moves if hasattr(self, '_m_moves') else None
 
     @property
     def shiny_xor(self):
@@ -356,6 +388,22 @@ class Pkb8(KaitaiStruct):
         return self._m_form_arg_remain if hasattr(self, '_m_form_arg_remain') else None
 
     @property
+    def ball(self):
+        if hasattr(self, '_m_ball'):
+            return self._m_ball if hasattr(self, '_m_ball') else None
+
+        self._m_ball = self.d.ball
+        return self._m_ball if hasattr(self, '_m_ball') else None
+
+    @property
+    def evs(self):
+        if hasattr(self, '_m_evs'):
+            return self._m_evs if hasattr(self, '_m_evs') else None
+
+        self._m_evs = self.a.evs
+        return self._m_evs if hasattr(self, '_m_evs') else None
+
+    @property
     def fateful_encounter(self):
         if hasattr(self, '_m_fateful_encounter'):
             return self._m_fateful_encounter if hasattr(self, '_m_fateful_encounter') else None
@@ -404,11 +452,27 @@ class Pkb8(KaitaiStruct):
         return self._m_ivs if hasattr(self, '_m_ivs') else None
 
     @property
+    def nature(self):
+        if hasattr(self, '_m_nature'):
+            return self._m_nature if hasattr(self, '_m_nature') else None
+
+        self._m_nature = self.a.nature
+        return self._m_nature if hasattr(self, '_m_nature') else None
+
+    @property
     def has_nickname(self):
         if hasattr(self, '_m_has_nickname'):
             return self._m_has_nickname if hasattr(self, '_m_has_nickname') else None
 
         self._m_has_nickname = ((self.ivs32 >> 31) & 1) == 1
         return self._m_has_nickname if hasattr(self, '_m_has_nickname') else None
+
+    @property
+    def language(self):
+        if hasattr(self, '_m_language'):
+            return self._m_language if hasattr(self, '_m_language') else None
+
+        self._m_language = self.c.language
+        return self._m_language if hasattr(self, '_m_language') else None
 
 
