@@ -55,7 +55,7 @@ class PX8:
 
         self._showdown = self._parse_showdown()
 
-        self.sprite = enums["sprites"][self._kt.a.species][self._kt.a.form]
+        self.sprite = enums["sprites"][self._kt.a.species][self._kt.a.form][1 if self.shiny else 0]
 
     def __str__(self) -> str:
         if not self._bytes:
