@@ -8,13 +8,18 @@ from .kaitai.pkb8 import Pkb8
 class PX8:
     def __init__(self, buf: Union[bytes, str]) -> None:
         if isinstance(buf, str):
-            self._bytes = bytearray(bytes.fromhex(buf))
+            b = bytes.fromhex(buf)
         else:
-            self._bytes = bytearray(buf)
+            b = buf
+        self._bytes = bytearray(buf)
+        
         if self._is_enc():
             self._decrypt()
 
-        self._kt = Pkb8.from_bytes(buf=self.to_bytes())
+        if len(self.to_bytes()) == 260:
+            self._kt = Pb7.from_bytes(buf=self.to_bytes())
+        elif len(self.to_bytes()) == 344:
+            self._kt = Pkb8.from_bytes(buf=self.to_bytes())
 
         self.species = enums["forms"][self._kt.a.species][self._kt.a.form]
 
