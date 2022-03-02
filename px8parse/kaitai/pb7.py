@@ -30,7 +30,7 @@ class Pb7(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.ht = (self._io.read_bytes(24)).decode(u"UTF-8")
+            self.ot = (self._io.read_bytes(24)).decode(u"UTF-8")
             self.enc_chk_0 = Pb7.EncChk(self._io, self, self._root)
             self.ot_friendship = self._io.read_u1()
             self.unused_0 = self._io.read_bytes(6)
@@ -221,6 +221,14 @@ class Pb7(KaitaiStruct):
         return self._m_ability_num if hasattr(self, '_m_ability_num') else None
 
     @property
+    def ot_lang(self):
+        if hasattr(self, '_m_ot_lang'):
+            return self._m_ot_lang if hasattr(self, '_m_ot_lang') else None
+
+        self._m_ot_lang = self.language
+        return self._m_ot_lang if hasattr(self, '_m_ot_lang') else None
+
+    @property
     def pkrs_days(self):
         if hasattr(self, '_m_pkrs_days'):
             return self._m_pkrs_days if hasattr(self, '_m_pkrs_days') else None
@@ -245,12 +253,28 @@ class Pb7(KaitaiStruct):
         return self._m_form_argument_elapsed if hasattr(self, '_m_form_argument_elapsed') else None
 
     @property
+    def ot(self):
+        if hasattr(self, '_m_ot'):
+            return self._m_ot if hasattr(self, '_m_ot') else None
+
+        self._m_ot = self.d.ot
+        return self._m_ot if hasattr(self, '_m_ot') else None
+
+    @property
     def shiny_type(self):
         if hasattr(self, '_m_shiny_type'):
             return self._m_shiny_type if hasattr(self, '_m_shiny_type') else None
 
         self._m_shiny_type = ((u"Square" if self.shiny_xor == 0 else u"Star") if self.is_shiny else u"")
         return self._m_shiny_type if hasattr(self, '_m_shiny_type') else None
+
+    @property
+    def tidsid(self):
+        if hasattr(self, '_m_tidsid'):
+            return self._m_tidsid if hasattr(self, '_m_tidsid') else None
+
+        self._m_tidsid = self.a.tidsid
+        return self._m_tidsid if hasattr(self, '_m_tidsid') else None
 
     @property
     def pkrs_strain(self):

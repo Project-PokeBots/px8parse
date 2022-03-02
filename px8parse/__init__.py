@@ -126,9 +126,9 @@ class PX8:
 
         Set.append(f'Ball: {self.ball}')
 
-        Set.append(f'OT: {self._kt.d.ot}')
-        Set.append(f"TID: {str(self._kt.a.tidsid)[4:]}")
-        Set.append(f"SID: {str(self._kt.a.tidsid)[:4]}")
+        Set.append(f'OT: {self._kt.ot}')
+        Set.append(f"TID: {str(self._kt.tidsid)[4:]}")
+        Set.append(f"SID: {str(self._kt.tidsid)[:4]}")
         Set.append(f"OTGender: {self.ot_gender}")
         Set.append(f"OTLanguage: {self.ot_lang}")
         
