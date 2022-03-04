@@ -103,7 +103,7 @@ class Pkb8(KaitaiStruct):
             self.nature = self._io.read_u1()
             self.stat_nature = self._io.read_u1()
             self.multi_1 = self._io.read_u1()
-            self.unused_a3 = self._io.read_bytes(1)
+            self.unused_3 = self._io.read_bytes(1)
             self.form = self._io.read_u2le()
             self.evs = [None] * (6)
             for i in range(6):
@@ -120,6 +120,7 @@ class Pkb8(KaitaiStruct):
             self.unused_5 = self._io.read_bytes(4)
             self.height_scalar = self._io.read_u1()
             self.weight_scalar = self._io.read_u1()
+            self.height_scalar_copy = self._io.read_u1()
             self.unused_a6 = self._io.read_bytes(6)
 
 
@@ -256,15 +257,23 @@ class Pkb8(KaitaiStruct):
         if hasattr(self, '_m_met_lvl'):
             return self._m_met_lvl if hasattr(self, '_m_met_lvl') else None
 
-        self._m_met_lvl = (self.d.multi_0 & ~128)
+        self._m_met_lvl = (self.multi_d0 & ~128)
         return self._m_met_lvl if hasattr(self, '_m_met_lvl') else None
+
+    @property
+    def pid(self):
+        if hasattr(self, '_m_pid'):
+            return self._m_pid if hasattr(self, '_m_pid') else None
+
+        self._m_pid = self.a.pid
+        return self._m_pid if hasattr(self, '_m_pid') else None
 
     @property
     def ability_num(self):
         if hasattr(self, '_m_ability_num'):
             return self._m_ability_num if hasattr(self, '_m_ability_num') else None
 
-        self._m_ability_num = (self.a.multi_0 & 7)
+        self._m_ability_num = (self.multi_a0 & 7)
         return self._m_ability_num if hasattr(self, '_m_ability_num') else None
 
     @property
@@ -332,11 +341,27 @@ class Pkb8(KaitaiStruct):
         return self._m_held_item if hasattr(self, '_m_held_item') else None
 
     @property
+    def multi_a1(self):
+        if hasattr(self, '_m_multi_a1'):
+            return self._m_multi_a1 if hasattr(self, '_m_multi_a1') else None
+
+        self._m_multi_a1 = self.a.multi_1
+        return self._m_multi_a1 if hasattr(self, '_m_multi_a1') else None
+
+    @property
+    def multi_d0(self):
+        if hasattr(self, '_m_multi_d0'):
+            return self._m_multi_d0 if hasattr(self, '_m_multi_d0') else None
+
+        self._m_multi_d0 = self.d.multi_0
+        return self._m_multi_d0 if hasattr(self, '_m_multi_d0') else None
+
+    @property
     def flag2(self):
         if hasattr(self, '_m_flag2'):
             return self._m_flag2 if hasattr(self, '_m_flag2') else None
 
-        self._m_flag2 = (self.a.multi_1 & 2) == 2
+        self._m_flag2 = (self.multi_a1 & 2) == 2
         return self._m_flag2 if hasattr(self, '_m_flag2') else None
 
     @property
@@ -392,7 +417,7 @@ class Pkb8(KaitaiStruct):
         if hasattr(self, '_m_shiny_xor'):
             return self._m_shiny_xor if hasattr(self, '_m_shiny_xor') else None
 
-        self._m_shiny_xor = ((((self.tidsid >> 16) ^ (self.tidsid & 65535)) ^ (self.a.pid >> 16)) ^ (self.a.pid & 65535))
+        self._m_shiny_xor = ((((self.tidsid >> 16) ^ (self.tidsid & 65535)) ^ (self.pid >> 16)) ^ (self.pid & 65535))
         return self._m_shiny_xor if hasattr(self, '_m_shiny_xor') else None
 
     @property
@@ -416,7 +441,7 @@ class Pkb8(KaitaiStruct):
         if hasattr(self, '_m_fav'):
             return self._m_fav if hasattr(self, '_m_fav') else None
 
-        self._m_fav = (self.a.multi_0 & 8) != 0
+        self._m_fav = (self.multi_a0 & 8) != 0
         return self._m_fav if hasattr(self, '_m_fav') else None
 
     @property
@@ -426,6 +451,14 @@ class Pkb8(KaitaiStruct):
 
         self._m_form_arg_elapsed = (self.form_arg >> 8)
         return self._m_form_arg_elapsed if hasattr(self, '_m_form_arg_elapsed') else None
+
+    @property
+    def multi_a0(self):
+        if hasattr(self, '_m_multi_a0'):
+            return self._m_multi_a0 if hasattr(self, '_m_multi_a0') else None
+
+        self._m_multi_a0 = self.a.multi_0
+        return self._m_multi_a0 if hasattr(self, '_m_multi_a0') else None
 
     @property
     def form_arg_remain(self):
@@ -456,7 +489,7 @@ class Pkb8(KaitaiStruct):
         if hasattr(self, '_m_fateful_encounter'):
             return self._m_fateful_encounter if hasattr(self, '_m_fateful_encounter') else None
 
-        self._m_fateful_encounter = (self.a.multi_1 & 1) == 1
+        self._m_fateful_encounter = (self.multi_a1 & 1) == 1
         return self._m_fateful_encounter if hasattr(self, '_m_fateful_encounter') else None
 
     @property
@@ -472,7 +505,7 @@ class Pkb8(KaitaiStruct):
         if hasattr(self, '_m_gender'):
             return self._m_gender if hasattr(self, '_m_gender') else None
 
-        self._m_gender = ((self.a.multi_1 >> 2) & 3)
+        self._m_gender = ((self.multi_a1 >> 2) & 3)
         return self._m_gender if hasattr(self, '_m_gender') else None
 
     @property
@@ -480,7 +513,7 @@ class Pkb8(KaitaiStruct):
         if hasattr(self, '_m_ot_gender'):
             return self._m_ot_gender if hasattr(self, '_m_ot_gender') else None
 
-        self._m_ot_gender = (self.d.multi_0 >> 7)
+        self._m_ot_gender = (self.multi_d0 >> 7)
         return self._m_ot_gender if hasattr(self, '_m_ot_gender') else None
 
     @property
@@ -488,7 +521,7 @@ class Pkb8(KaitaiStruct):
         if hasattr(self, '_m_can_gmax'):
             return self._m_can_gmax if hasattr(self, '_m_can_gmax') else None
 
-        self._m_can_gmax = (self.a.multi_0 & 16) != 0
+        self._m_can_gmax = (self.multi_a0 & 16) != 0
         return self._m_can_gmax if hasattr(self, '_m_can_gmax') else None
 
     @property

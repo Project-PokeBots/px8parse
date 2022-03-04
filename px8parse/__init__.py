@@ -4,6 +4,7 @@ from .crypto import Pokecypto
 from .enums import enums
 from .kaitai.pkb8 import Pkb8
 from .kaitai.pb7 import Pb7
+from .kaitai.pa8 import Pa8
 
 
 class PX8:
@@ -21,6 +22,8 @@ class PX8:
             self._kt = Pb7.from_bytes(buf=self.to_bytes())
         elif len(self.to_bytes()) == 344:
             self._kt = Pkb8.from_bytes(buf=self.to_bytes())
+        elif len(self.to_bytes()) == 376:
+            self._kt = Pa8.from_bytes(buf=self.to_bytes())
 
         self.species = enums["forms"][self._kt.species][self._kt.form]
 

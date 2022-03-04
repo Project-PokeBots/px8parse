@@ -32,7 +32,7 @@ from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
     raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (kaitaistruct.__version__))
 
-class Pb7(KaitaiStruct):
+class Pa8(KaitaiStruct):
     def __init__(self, _io, _parent=None, _root=None):
         self._io = _io
         self._parent = _parent
@@ -40,11 +40,12 @@ class Pb7(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.a = Pb7.BlkA(self._io, self, self._root)
-        self.b = Pb7.BlkB(self._io, self, self._root)
-        self.c = Pb7.BlkC(self._io, self, self._root)
-        self.d = Pb7.BlkD(self._io, self, self._root)
-        self.bs = Pb7.BlkBs(self._io, self, self._root)
+        self.h = Pa8.Header(self._io, self, self._root)
+        self.a = Pa8.BlkA(self._io, self, self._root)
+        self.b = Pa8.BlkB(self._io, self, self._root)
+        self.c = Pa8.BlkC(self._io, self, self._root)
+        self.d = Pa8.BlkD(self._io, self, self._root)
+        self.bs = Pa8.BlkBs(self._io, self, self._root)
 
     class BlkD(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -56,7 +57,11 @@ class Pb7(KaitaiStruct):
         def _read(self):
             self.ot = (self._io.read_bytes(26)).decode(u"UTF-8")
             self.ot_friendship = self._io.read_u1()
-            self.unused_0 = self._io.read_bytes(6)
+            self.ot_intensity = self._io.read_u1()
+            self.ot_memory = self._io.read_u1()
+            self.unused_0 = self._io.read_bytes(1)
+            self.ot_textvar = self._io.read_u2le()
+            self.ot_feeling = self._io.read_u1()
             self.egg_date = [None] * (3)
             for i in range(3):
                 self.egg_date[i] = self._io.read_u1()
@@ -65,16 +70,13 @@ class Pb7(KaitaiStruct):
             for i in range(3):
                 self.met_date[i] = self._io.read_u1()
 
-            self.rank = self._io.read_u1()
+            self.ball = self._io.read_u1()
             self.egg_location = self._io.read_u2le()
             self.met_location = self._io.read_u2le()
-            self.ball = self._io.read_u1()
+            self.unused_1 = self._io.read_bytes(1)
             self.multi_0 = self._io.read_u1()
             self.multi_1 = self._io.read_u1()
-            self.version = self._io.read_u1()
-            self.unused_1 = self._io.read_bytes(3)
-            self.language = self._io.read_u1()
-            self.weight_absolute = self._io.read_bytes(4)
+            self.unused_2 = self._io.read_bytes(41)
 
 
     class BlkA(KaitaiStruct):
@@ -85,34 +87,48 @@ class Pb7(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.encryption_constant = self._io.read_u4le()
-            self.sanity = self._io.read_u2le()
-            self.checksum = self._io.read_u2le()
             self.species = self._io.read_u2le()
             self.held_item = self._io.read_u2le()
             self.tidsid = self._io.read_u4le()
             self.exp = self._io.read_u4le()
-            self.ability = self._io.read_u1()
+            self.ability = self._io.read_u2le()
             self.multi_0 = self._io.read_u1()
+            self.unused_0 = self._io.read_bytes(1)
             self.mark_value = self._io.read_u2le()
+            self.unused_1 = self._io.read_bytes(2)
             self.pid = self._io.read_u4le()
             self.nature = self._io.read_u1()
+            self.stat_nature = self._io.read_u1()
             self.multi_1 = self._io.read_u1()
+            self.unused_3 = self._io.read_bytes(1)
+            self.form = self._io.read_u2le()
             self.evs = [None] * (6)
             for i in range(6):
                 self.evs[i] = self._io.read_u1()
 
-            self.avs = [None] * (6)
+            self.cnts = [None] * (6)
             for i in range(6):
-                self.avs[i] = self._io.read_u1()
+                self.cnts[i] = self._io.read_u1()
 
-            self.unused_0 = self._io.read_bytes(1)
             self.multi_2 = self._io.read_u1()
-            self.height_absolute = self._io.read_bytes(12)
-            self.unused_1 = self._io.read_bytes(2)
+            self.unused_4 = self._io.read_bytes(1)
+            self.ribbons_0 = self._io.read_bytes(10)
+            self.alpha_move = self._io.read_u2le()
+            self.ribbons_1 = self._io.read_bytes(8)
+            self.sociability = self._io.read_u4le()
+            self.unused_5 = self._io.read_bytes(4)
             self.height_scalar = self._io.read_u1()
             self.weight_scalar = self._io.read_u1()
-            self.multi_3 = self._io.read_u4le()
+            self.height_scalar_copy = self._io.read_u1()
+            self.unused_6 = self._io.read_bytes(1)
+            self.moves = [None] * (4)
+            for i in range(4):
+                self.moves[i] = self._io.read_u2le()
+
+            self.move_pps = [None] * (4)
+            for i in range(4):
+                self.move_pps[i] = self._io.read_u1()
+
 
 
     class EncChk(KaitaiStruct):
@@ -134,13 +150,10 @@ class Pb7(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.status_condition = self._io.read_u4le()
             self.stat_level = self._io.read_u1()
-            self.dirt_type = self._io.read_u1()
-            self.dirt_location = self._io.read_u1()
             self.unused_0 = self._io.read_bytes(1)
-            self.stats = [None] * (8)
-            for i in range(8):
+            self.stats = [None] * (6)
+            for i in range(6):
                 self.stats[i] = self._io.read_u2le()
 
             self.unused_1 = self._io.read_bytes_full()
@@ -154,16 +167,8 @@ class Pb7(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.nickname = (self._io.read_bytes(24)).decode(u"UTF-8")
-            self.enc_chk_0 = Pb7.EncChk(self._io, self, self._root)
-            self.moves = [None] * (4)
-            for i in range(4):
-                self.moves[i] = self._io.read_u2le()
-
-            self.move_pps = [None] * (4)
-            for i in range(4):
-                self.move_pps[i] = self._io.read_u1()
-
+            self.nickname = (self._io.read_bytes(36)).decode(u"UTF-8")
+            self.enc_chk_0 = Pa8.EncChk(self._io, self, self._root)
             self.move_ppups = [None] * (4)
             for i in range(4):
                 self.move_ppups[i] = self._io.read_u1()
@@ -172,8 +177,33 @@ class Pb7(KaitaiStruct):
             for i in range(4):
                 self.relearn_moves[i] = self._io.read_u2le()
 
-            self.unused_0 = self._io.read_bytes(2)
+            self.stat_hpcurrent = self._io.read_u2le()
             self.multi_0 = self._io.read_u4le()
+            self.gmax_level = self._io.read_u1()
+            self.unused_0 = self._io.read_bytes(3)
+            self.status_condition = self._io.read_u4le()
+            self.unka0 = self._io.read_u4le()
+            self.gvs = [None] * (6)
+            for i in range(6):
+                self.gvs[i] = self._io.read_u1()
+
+            self.unused_1 = self._io.read_bytes(2)
+            self.height_absolute = self._io.read_bytes(4)
+            self.weight_absolute = self._io.read_bytes(4)
+            self.unused_2 = self._io.read_bytes(4)
+
+
+    class Header(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.encryption_constant = self._io.read_u4le()
+            self.sanity = self._io.read_u2le()
+            self.checksum = self._io.read_u2le()
 
 
     class BlkC(KaitaiStruct):
@@ -185,22 +215,29 @@ class Pb7(KaitaiStruct):
 
         def _read(self):
             self.ht = (self._io.read_bytes(24)).decode(u"UTF-8")
-            self.enc_chk_0 = Pb7.EncChk(self._io, self, self._root)
+            self.enc_chk_1 = Pa8.EncChk(self._io, self, self._root)
             self.ht_gender = self._io.read_u1()
+            self.ht_language = self._io.read_u1()
             self.current_handler = self._io.read_u1()
-            self.unused_0 = self._io.read_bytes(14)
+            self.unused_0 = self._io.read_u1()
+            self.ht_trainer_id = self._io.read_u2le()
             self.ht_friendship = self._io.read_u1()
-            self.unused_1 = self._io.read_bytes(1)
             self.ht_intensity = self._io.read_u1()
             self.ht_memory = self._io.read_u1()
             self.ht_feeling = self._io.read_u1()
-            self.unused_2 = self._io.read_bytes(1)
             self.ht_textvar = self._io.read_u2le()
-            self.unused3 = self._io.read_bytes(2)
-            self.field_event_fatigue_0 = self._io.read_u1()
-            self.field_event_fatigue_1 = self._io.read_u1()
+            self.unused_1 = self._io.read_bytes(14)
             self.fullness = self._io.read_u1()
             self.enjoyment = self._io.read_u1()
+            self.version = self._io.read_u1()
+            self.battle_version = self._io.read_u1()
+            self.region = self._io.read_u1()
+            self.console_region = self._io.read_u1()
+            self.language = self._io.read_u1()
+            self.unkf3 = self._io.read_u1()
+            self.multi_0 = self._io.read_u4le()
+            self.affixed_ribbon = self._io.read_u1()
+            self.unused_2 = self._io.read_bytes(23)
 
 
     @property
@@ -236,14 +273,6 @@ class Pb7(KaitaiStruct):
         return self._m_pid if hasattr(self, '_m_pid') else None
 
     @property
-    def form_argument_maximum(self):
-        if hasattr(self, '_m_form_argument_maximum'):
-            return self._m_form_argument_maximum if hasattr(self, '_m_form_argument_maximum') else None
-
-        self._m_form_argument_maximum = (self.form_argument >> 16)
-        return self._m_form_argument_maximum if hasattr(self, '_m_form_argument_maximum') else None
-
-    @property
     def ability_num(self):
         if hasattr(self, '_m_ability_num'):
             return self._m_ability_num if hasattr(self, '_m_ability_num') else None
@@ -256,7 +285,7 @@ class Pb7(KaitaiStruct):
         if hasattr(self, '_m_ot_lang'):
             return self._m_ot_lang if hasattr(self, '_m_ot_lang') else None
 
-        self._m_ot_lang = self.language
+        self._m_ot_lang = self.c.ht_language
         return self._m_ot_lang if hasattr(self, '_m_ot_lang') else None
 
     @property
@@ -274,14 +303,6 @@ class Pb7(KaitaiStruct):
 
         self._m_hts = [((self.ht_flags >> 0) & 1) == 1, ((self.ht_flags >> 1) & 1) == 1, ((self.ht_flags >> 2) & 1) == 1, ((self.ht_flags >> 3) & 1) == 1, ((self.ht_flags >> 4) & 1) == 1, ((self.ht_flags >> 5) & 1) == 1]
         return self._m_hts if hasattr(self, '_m_hts') else None
-
-    @property
-    def form_argument_elapsed(self):
-        if hasattr(self, '_m_form_argument_elapsed'):
-            return self._m_form_argument_elapsed if hasattr(self, '_m_form_argument_elapsed') else None
-
-        self._m_form_argument_elapsed = (self.form_argument >> 8)
-        return self._m_form_argument_elapsed if hasattr(self, '_m_form_argument_elapsed') else None
 
     @property
     def ot(self):
@@ -340,6 +361,14 @@ class Pb7(KaitaiStruct):
         return self._m_multi_d0 if hasattr(self, '_m_multi_d0') else None
 
     @property
+    def flag2(self):
+        if hasattr(self, '_m_flag2'):
+            return self._m_flag2 if hasattr(self, '_m_flag2') else None
+
+        self._m_flag2 = (self.multi_a1 & 2) == 2
+        return self._m_flag2 if hasattr(self, '_m_flag2') else None
+
+    @property
     def ability(self):
         if hasattr(self, '_m_ability'):
             return self._m_ability if hasattr(self, '_m_ability') else None
@@ -348,12 +377,12 @@ class Pb7(KaitaiStruct):
         return self._m_ability if hasattr(self, '_m_ability') else None
 
     @property
-    def form_argumant_remain(self):
-        if hasattr(self, '_m_form_argumant_remain'):
-            return self._m_form_argumant_remain if hasattr(self, '_m_form_argumant_remain') else None
+    def form_arg(self):
+        if hasattr(self, '_m_form_arg'):
+            return self._m_form_arg if hasattr(self, '_m_form_arg') else None
 
-        self._m_form_argumant_remain = self.form_argument
-        return self._m_form_argumant_remain if hasattr(self, '_m_form_argumant_remain') else None
+        self._m_form_arg = self.c.multi_0
+        return self._m_form_arg if hasattr(self, '_m_form_arg') else None
 
     @property
     def ht_flags(self):
@@ -362,6 +391,14 @@ class Pb7(KaitaiStruct):
 
         self._m_ht_flags = self.d.multi_1
         return self._m_ht_flags if hasattr(self, '_m_ht_flags') else None
+
+    @property
+    def form_arg_max(self):
+        if hasattr(self, '_m_form_arg_max'):
+            return self._m_form_arg_max if hasattr(self, '_m_form_arg_max') else None
+
+        self._m_form_arg_max = (self.form_arg >> 16)
+        return self._m_form_arg_max if hasattr(self, '_m_form_arg_max') else None
 
     @property
     def species(self):
@@ -376,7 +413,7 @@ class Pb7(KaitaiStruct):
         if hasattr(self, '_m_moves'):
             return self._m_moves if hasattr(self, '_m_moves') else None
 
-        self._m_moves = self.b.moves
+        self._m_moves = self.a.moves
         return self._m_moves if hasattr(self, '_m_moves') else None
 
     @property
@@ -392,7 +429,7 @@ class Pb7(KaitaiStruct):
         if hasattr(self, '_m_form'):
             return self._m_form if hasattr(self, '_m_form') else None
 
-        self._m_form = (self.multi_a1 >> 3)
+        self._m_form = self.a.form
         return self._m_form if hasattr(self, '_m_form') else None
 
     @property
@@ -412,12 +449,28 @@ class Pb7(KaitaiStruct):
         return self._m_fav if hasattr(self, '_m_fav') else None
 
     @property
+    def form_arg_elapsed(self):
+        if hasattr(self, '_m_form_arg_elapsed'):
+            return self._m_form_arg_elapsed if hasattr(self, '_m_form_arg_elapsed') else None
+
+        self._m_form_arg_elapsed = (self.form_arg >> 8)
+        return self._m_form_arg_elapsed if hasattr(self, '_m_form_arg_elapsed') else None
+
+    @property
     def multi_a0(self):
         if hasattr(self, '_m_multi_a0'):
             return self._m_multi_a0 if hasattr(self, '_m_multi_a0') else None
 
         self._m_multi_a0 = self.a.multi_0
         return self._m_multi_a0 if hasattr(self, '_m_multi_a0') else None
+
+    @property
+    def form_arg_remain(self):
+        if hasattr(self, '_m_form_arg_remain'):
+            return self._m_form_arg_remain if hasattr(self, '_m_form_arg_remain') else None
+
+        self._m_form_arg_remain = self.form_arg
+        return self._m_form_arg_remain if hasattr(self, '_m_form_arg_remain') else None
 
     @property
     def ball(self):
@@ -456,16 +509,8 @@ class Pb7(KaitaiStruct):
         if hasattr(self, '_m_gender'):
             return self._m_gender if hasattr(self, '_m_gender') else None
 
-        self._m_gender = ((self.multi_a1 >> 1) & 3)
+        self._m_gender = ((self.multi_a1 >> 2) & 3)
         return self._m_gender if hasattr(self, '_m_gender') else None
-
-    @property
-    def form_argument(self):
-        if hasattr(self, '_m_form_argument'):
-            return self._m_form_argument if hasattr(self, '_m_form_argument') else None
-
-        self._m_form_argument = self.a.multi_3
-        return self._m_form_argument if hasattr(self, '_m_form_argument') else None
 
     @property
     def ot_gender(self):
@@ -474,6 +519,14 @@ class Pb7(KaitaiStruct):
 
         self._m_ot_gender = (self.multi_d0 >> 7)
         return self._m_ot_gender if hasattr(self, '_m_ot_gender') else None
+
+    @property
+    def can_gmax(self):
+        if hasattr(self, '_m_can_gmax'):
+            return self._m_can_gmax if hasattr(self, '_m_can_gmax') else None
+
+        self._m_can_gmax = (self.multi_a0 & 16) != 0
+        return self._m_can_gmax if hasattr(self, '_m_can_gmax') else None
 
     @property
     def ivs(self):
@@ -504,7 +557,7 @@ class Pb7(KaitaiStruct):
         if hasattr(self, '_m_language'):
             return self._m_language if hasattr(self, '_m_language') else None
 
-        self._m_language = self.d.language
+        self._m_language = self.c.language
         return self._m_language if hasattr(self, '_m_language') else None
 
 
