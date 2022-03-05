@@ -121,7 +121,7 @@ class Pkb8(KaitaiStruct):
             self.height_scalar = self._io.read_u1()
             self.weight_scalar = self._io.read_u1()
             self.height_scalar_copy = self._io.read_u1()
-            self.unused_a6 = self._io.read_bytes(6)
+            self.unused_6 = self._io.read_bytes(5)
 
 
     class EncChk(KaitaiStruct):
@@ -133,6 +133,8 @@ class Pkb8(KaitaiStruct):
 
         def _read(self):
             self.enc_chk = self._io.read_bytes(2)
+            if not self.enc_chk == b"\x00\x00":
+                raise kaitaistruct.ValidationNotEqualError(b"\x00\x00", self.enc_chk, self._io, u"/types/enc_chk/seq/0")
 
 
     class BlkBs(KaitaiStruct):

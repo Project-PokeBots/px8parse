@@ -140,6 +140,8 @@ class Pa8(KaitaiStruct):
 
         def _read(self):
             self.enc_chk = self._io.read_bytes(2)
+            if not self.enc_chk == b"\x00\x00":
+                raise kaitaistruct.ValidationNotEqualError(b"\x00\x00", self.enc_chk, self._io, u"/types/enc_chk/seq/0")
 
 
     class BlkBs(KaitaiStruct):
