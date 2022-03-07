@@ -28,7 +28,7 @@ class PX8:
         self.species = enums["forms"][self._kt.species][self._kt.form]
 
         if self._kt.has_nickname:
-            self.nickname = self._bytes[0x58:0x72].split(b"\00\00")[0].decode("utf-8")
+            self.nickname = self._bytes[0x58:0x72].split(b"\00\00")[0].decode()
         else:
             self.nickname = None
 
