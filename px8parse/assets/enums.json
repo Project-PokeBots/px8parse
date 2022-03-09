@@ -41,16 +41,16 @@
     "Dream",
     "Beast",
     "Strange",
-    "LAPoke",
-    "LAGreat",
-    "LAUltra",
-    "LAFeather",
-    "LAWing",
-    "LAJet",
-    "LAHeavy",
-    "LALeaden",
-    "LAGigaton",
-    "LAOrigin"
+    "Poke",
+    "Great",
+    "Ultra",
+    "Feather",
+    "Wing",
+    "Jet",
+    "Heavy",
+    "Leaden",
+    "Gigaton",
+    "Origin"
   ],
   "ev_units":[
     "HP",
@@ -6665,7 +6665,8 @@
       "Arceus-Psychic",
       "Arceus-Rock",
       "Arceus-Steel",
-      "Arceus-Water"
+      "Arceus-Water",
+      "Arceus-Legend"
     ],
     [
       "Victini"
@@ -11584,6 +11585,10 @@
       [
         "https://play.pokemonshowdown.com/sprites/ani/arceus-water.gif",
         "https://play.pokemonshowdown.com/sprites/ani-shiny/arceus-water.gif"
+      ],
+      [
+        "https://play.pokemonshowdown.com/sprites/ani/arceus.gif",
+        "https://play.pokemonshowdown.com/sprites/ani-shiny/arceus.gif"
       ]
     ],
     [
@@ -17770,6 +17775,9 @@
       ],
       [
         "Water"
+      ],
+      [
+        "Normal"
       ]
     ],
     [
