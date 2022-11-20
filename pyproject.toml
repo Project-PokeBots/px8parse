@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "px8parse"
-version = "0.8.5"
+version = "0.8.6"
 description = ""
 authors = ["Z1R343L"]
 packages = [
@@ -11,7 +11,7 @@ include = ["px8parse/assets/*.json"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-kaitaistruct = "^0.9"
+kaitaistruct = "^0.10"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
