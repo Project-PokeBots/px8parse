@@ -63,8 +63,10 @@ class PX8:
                 self.moves.append(enums["moves"][m])
 
         self._showdown = self._parse_showdown()
-        if self._kt.species in enums["sprites"]:
+        try:
             self.sprite = enums["sprites"][self._kt.species][self._kt.form][1 if self.shiny else 0]
+        except Exception:
+            self.sprite = None
 
     def __str__(self) -> str:
         if not self._bytes:
